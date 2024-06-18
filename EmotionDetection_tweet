@@ -1,0 +1,36 @@
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
+import numpy as np
+
+# Load the pre-trained model and tokenizer
+model_name = "j-hartmann/emotion-english-distilroberta-base"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForSequenceClassification.from_pretrained(model_name)
+
+# Emotions corresponding to the model's output labels
+emotions = ['anger', 'disgust', 'fear', 'joy', 'neutral', 'sadness', 'surprise']
+
+def predict_emotion(tweet):
+    # Tokenize the tweet
+    inputs = tokenizer(tweet, return_tensors="pt", truncation=True, padding=True, max_length=128)
+
+    # Get model predictions
+    with torch.no_grad():
+        outputs = model(**inputs)
+
+    # Convert model output logits to probabilities
+    probabilities = torch.nn.functional.softmax(outputs.logits, dim=-1)
+    probs = probabilities[0].numpy()
+
+    # Get the index of the highest probability
+    max_index = np.argmax(probs)
+    
+    return emotions[max_index], probs[max_index]
+
+# Main loop to take user input and predict emotion
+while True:
+    tweet = input("Enter a tweet (or type 'exit' to quit): ")
+    if tweet.lower() == 'exit':
+        break
+    emotion, confidence = predict_emotion(tweet)
+    print(f"Tweet: {tweet}\nPredicted Emotion: {emotion} (Confidence: {confidence:.2f})\n")
