@@ -1,0 +1,64 @@
+import numpy as np
+import pandas as pd
+dict1={"name":['harry','rohan','sam'],
+       "marks":[40,49,45],
+        "city":['mumbai','delhi','pune']
+}
+df=pd.DataFrame(dict1)
+
+#Prints the dataset
+# print(df)
+
+#Prints the first 2 values of dataset
+# print(df.head(2))
+
+#Prints the last 2 values of dataset
+# print(df.tail(2))
+
+#Prints the statistical data of the dataset
+# print(df.describe())
+
+#Converts the dataset to a csv file
+# df.to_csv('students.csv', index=False)
+
+#Reads a csv file
+shrishti=pd.read_csv('Shrishti.csv - Sheet1.csv')
+
+#Print a csv
+# print(shrishti)
+
+#Print a particular column of a csv
+# print(shrishti['CG'])
+
+#Change a particular value in csv
+# shrishti['CG'][0]=5
+
+#Changing the index
+# shrishti.index=['first','second','third']
+
+# print(shrishti)
+
+#Series
+# ser=pd.Series(np.random.rand(10))
+# print(ser)
+
+#Dataframe
+newdf=pd.DataFrame(np.random.rand(30,5), index=np.arange(30))
+# print(newdf)
+
+#Convert to numpy array
+# print(newdf.to_numpy())
+
+#Transforms the dataframe, rows to column n column to rows
+# print(newdf.T)
+
+#Sorts in decending order of index values
+#axis=0-row
+#axis=1-column
+# print(newdf.sort_index(axis=0, ascending=False))
+
+#Creates a view of newdf, the changes in newdf2 will be applied to newdf also
+# newdf2=newdf
+
+#Creates a copy of newdf, the changes in newdf2 will not be applied to newdf 
+# newdf2=newdf.copy()
