@@ -1,0 +1,47 @@
+#Usecase of os
+# import os
+# # Select the directory whose content you want to list 
+# directory_path = '/'
+# # Use the os module to list the directory content 
+# contents = os.listdir(directory_path)
+# # Print the contents of the directory 
+# print(contents)
+
+
+#Usecase of pyjokes
+# import pyjokes
+# joke=pyjokes.get_joke()
+# print(joke)
+
+
+#Opening a excel in the terminal
+# import pandas
+# df=pandas.read_excel("TT.xlsx")
+# print(df)
+
+
+#Taking input from the user
+# name=input("Enter name: ")
+# print(name)
+# print("Hey", name)
+
+
+#Creating a function
+# def h():
+#     name="Shrishti"
+#     print(name)
+#     print(2**5)
+#     print("Hey "+ name)
+# h()
+
+
+#Creating a txt file
+# s="Hello Siddhi"
+# with open("Greeting.txt", "w") as f:
+#     f.write(s)
+
+
+# Sorting and printing the dictionary
+# D={'a': 1, 'c': 3, 'b': 2}
+# for key in sorted(D):
+#   print(key, '=>', D[key])
