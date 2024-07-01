@@ -1,0 +1,61 @@
+import cv2
+import tensorflow as tf
+from tensorflow.keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input, decode_predictions
+
+# Step 1: Load the image
+def load_image(image_path):
+    #Reads the image from specific path
+    image = cv2.imread(image_path)
+    #Checks if image is present
+    if image is None:
+        raise FileNotFoundError(f"Image not found at {image_path}")
+    #Converts the image from BGR (OpenCV default) to RGB format
+    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    return image_rgb
+
+# Step 2: Preprocess the image
+def preprocess_image(image_rgb):
+    #Resizes the image to 224x224 pixels, the required input size for MobileNetV2.
+    image_resized = cv2.resize(image_rgb, (224, 224))
+    #Preprocesses the image by normalizing it to match the input format expected by MobileNetV2.
+    image_array = preprocess_input(image_resized)
+    #Adds an extra dimension to the image array to create a batch of size 1.
+    image_batch = tf.expand_dims(image_array, axis=0)
+    return image_batch
+
+# Step 3: Load the pre-trained model
+def load_model():
+    #Adds an extra dimension to the image array to create a batch of size 1.
+    model = MobileNetV2(weights='imagenet')
+    return model
+
+# Step 4: Make predictions
+def predict_clothing_type(model, image_batch):
+    # Makes predictions on the preprocessed image batch.
+    predictions = model.predict(image_batch)
+    # Decodes the predictions to get the top 5 human-readable class labels along with their confidence scores.
+    decoded_predictions = decode_predictions(predictions, top=5)[0]
+    return decoded_predictions
+
+# Step 5: Display predictions
+def display_predictions(decoded_predictions):
+    print("Top predictions:")
+    #Iterates through the decoded predictions and prints the top 5 predictions with their confidence scores.
+    for i, (imagenet_id, label, score) in enumerate(decoded_predictions):
+        print(f"{i+1}: {label} ({score*100:.2f}%)")
+
+# Main function
+def main(image_path):
+    try:
+        image_rgb = load_image(image_path)
+        image_batch = preprocess_image(image_rgb)
+        model = load_model()
+        decoded_predictions = predict_clothing_type(model, image_batch)
+        display_predictions(decoded_predictions)
+    except FileNotFoundError as e:
+        print(e)
+
+# Example usage
+if __name__ == "__main__":
+    image_path = 'Crop_top.jpg'
+    main(image_path)
